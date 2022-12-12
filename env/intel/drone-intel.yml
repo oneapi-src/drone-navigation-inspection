@@ -1,0 +1,13 @@
+name: drone-intel
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9.7
+  - pip=21.2.4
+  - pip:
+    - six==1.16.0
+    - tqdm==4.64.0
+    - opencv-python==4.5.5.64
+    - neural-compressor==1.12.0
+    - tensorflow==2.9.0
+    - protobuf==3.19.6

@@ -1,0 +1,34 @@
+Step 1:
+Create a kaggle folder using 'mkdir .kaggle' in root directory only 
+Navigate inside the kaggle folder using the command 'cd .kaggle'
+Install kaggle if not done using the below command: pip install kaggle
+Login to Kaggle account. Go to 'Account Tab' & select 'Create a new API token'. This will trigger the download of kaggle.json file in your local system.
+This file contains your API credentials and place it in VM  
+Move the downloaded 'kaggle.json' file to folder '.kaggle'. 
+For example -[mv /home/azureuser/kaggle.json  /home/azureuser/.kaggle]
+Make sure kaggle.json should be in <root directory>/.kaggle/kaggle.json [Supported format ]
+
+Warning : If you get any error like  please check your proxy settings , please configure accordingly by adding the following lines to bashrc files
+"""
+export KAGGLE_USERNAME=''
+export KAGGLE_KEY=''
+export KAGGLE_PROXY="http://
+
+"""
+You can also refer to this link : https://github.com/Kaggle/kaggle-api/issues/6
+
+Step 2:
+
+Navigate inside the data folder 'cd data'
+'kaggle datasets download -d bulentsiyah/semantic-drone-dataset' it will download  semantic-drone-dataset.zip file 
+Make it unzip using "unzip semantic-drone-dataset.zip"
+
+Step 3:
+
+mkdir Aerial_Semantic_Segmentation_Drone_Dataset
+mv  ./dataset ./Aerial_Semantic_Segmentation_Drone_Dataset
+mv ./RGB_color_image_masks ./Aerial_Semantic_Segmentation_Drone_Dataset
+
+
+
+ 
