@@ -1,7 +1,7 @@
 # Copyright (C) 2022 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 """
-Support file for training and evaluation
+main logic of the program
 """
 # pylint: disable=E0401 C0301 C0103 E1101 E0611 R0913 R0914 R1708 R0912 R0915 E1129 W0612
 # flake8: noqa = E501
