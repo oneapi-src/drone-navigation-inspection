@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Intel Corporation
+# Copyright (C) 2023 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 
 """
@@ -13,7 +13,7 @@ import itertools
 import random
 import tensorflow as tf
 tf.compat.v1.disable_eager_execution()
-from cv2 import cv2
+import cv2
 import numpy as np
 import six
 from utils import predict, evaluate, vgg_unet, frozen
@@ -30,21 +30,20 @@ if __name__ == "__main__":
                         type=str,
                         required=False,
                         default=None,
-                        help='Please provide the Latest Checkpoint path e.g for "./vgg-unet.1"...Default is None')
+                        help='Please provide the Latest Checkpoint path. Default is None.')
     parser.add_argument('-d',
                         '--data_path',
                         type=str,
-                        required=False,
-                        default='Aerial_Semantic_Segmentation_Drone_Dataset/dataset/semantic_drone_dataset/',
+                        required=True,
                         help='Absolute path to the dataset folder containing '
-                             '"original_images" and "label_images_semantic" folders')
+                             '"original_images" and "label_images_semantic" folders.')
     parser.add_argument('-t',
                         '--model_type',
                         type=int,
                         required=False,
                         default='0',
-                        help='0 for checkpoint '
-                             '1 for frozen_graph ')
+                        help='0 for checkpoint, '
+                             '1 for frozen_graph.')
     FLAGS = parser.parse_args()
     model_path = FLAGS.model_path
     model_type=FLAGS.model_type

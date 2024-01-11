@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Intel Corporation
+# Copyright (C) 2023 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 
 """
@@ -23,7 +23,7 @@ if __name__ == "__main__":
                         type=str,
                         required=False,
                         default=None,
-                        help='Please provide the Latest Checkpoint path e.g for "./vgg-unet.1"...Default is None')
+                        help="Please provide the Latest Checkpoint path. Default is None.")
 
 
     parser.add_argument('-o',
@@ -31,7 +31,7 @@ if __name__ == "__main__":
                         default=None,
                         type=str,
                         required=True,
-                        help="directory to save frozen graph to."
+                        help="Directory to save frozen graph to."
                         )
     FLAGS = parser.parse_args()
     model_path = FLAGS.model_path
@@ -45,7 +45,7 @@ if __name__ == "__main__":
         if latest_checkpoint is not None:
             print("Loading the weights from latest checkpoint ",
                   latest_checkpoint)
-            model.load_weights(latest_checkpoint)
+            model.load_weights(latest_checkpoint).expect_partial()
     else:
         print("Please Check the checkpoint model path Provided")
         sys.exit()

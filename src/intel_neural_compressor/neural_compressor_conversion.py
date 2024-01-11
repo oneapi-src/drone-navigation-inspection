@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Intel Corporation
+# Copyright (C) 2023 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 """
 INC QUANTIZATION model saving
@@ -10,7 +10,7 @@ import argparse
 import itertools
 import random
 import six
-from cv2 import cv2
+import cv2
 import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
@@ -106,36 +106,32 @@ if __name__ == "__main__":
     parser.add_argument('-m',
                         '--modelpath',
                         type=str,
-                        required=False,
-                        default='./frozen_graph/frozen_graph.pb',
-                        help='Model path trained with tensorflow ".pb" file')
+                        required=True,
+                        help='Path to the model trained with TensorFlow and saved as a ".pb" file.')
     parser.add_argument('-o',
                         '--outpath',
                         type=str,
-                        required=False,
-                        default='./inc_compressed_model/output',
-                        help='default output quantized model will be save in ./inc_compressed_model/output folder')
+                        required=True,
+                        help='Directory to save the INT8 quantized model to.')
     parser.add_argument('-c',
                         '--config',
                         type=str,
                         required=False,
-                        default='./deploy.yaml',
-                        help='Yaml file for quantizing model, default is "./deploy.yaml"')
+                        default=f'{os.environ["SRC_DIR"]}/intel_neural_compressor/deploy.yaml',
+                        help='Yaml file for quantizing model, default is "$SRC_DIR/intel_neural_compressor/deploy.yaml"')
     parser.add_argument('-d',
                         '--data_path',
                         type=str,
-                        required=False,
-                        default='Aerial_Semantic_Segmentation_Drone_Dataset/dataset/semantic_drone_dataset/',
+                        required=True,
                         help='Absolute path to the dataset folder containing '
-                             '"original_images" and "label_images_semantic" folders')
+                             '"original_images" and "label_images_semantic" folders.')
     parser.add_argument('-b',
                         '--batchsize',
                         type=str,
                         required=False,
                         default=1,
-                        help='batchsize for the dataloader....default is 1')
+                        help='batchsize for the dataloader. Default is 1.')
 
-    paramters = parser.parse_args()
     FLAGS = parser.parse_args()
     model_path = FLAGS.modelpath
     config_path = FLAGS.config
@@ -157,18 +153,3 @@ if __name__ == "__main__":
     quantizer.eval_func =  dataset.eval_function
     q_model = quantizer.fit()
     q_model.save(out_path)
-
-   
-    print("******************Evaluating the FP32 Model************************")
-    dataset = Dataset(data_path)
-    evaluator = Benchmark(config_path)
-    evaluator.model = model_path
-    evaluator.b_dataloader = common.DataLoader(dataset, batch_size=batchsize)
-    evaluator('performance')
-
-    print("******************Evaluating the FP32 Model************************")
-    dataset = Dataset(data_path)
-    evaluator = Benchmark(config_path)
-    evaluator.model = out_path
-    evaluator.b_dataloader = common.DataLoader(dataset, batch_size=batchsize)
-    evaluator('performance')

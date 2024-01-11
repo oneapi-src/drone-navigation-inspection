@@ -1,0 +1,12 @@
+name: drone_navigation_intel
+channels:
+  - intel
+  - conda-forge
+dependencies:
+  - intelpython3_core=2024.0.0
+  - python=3.9.18
+  - intel-aikit-tensorflow=2024.0
+  - tqdm=4.64.0
+  - pip=23.3  
+  - pip:
+    - opencv-python==4.8.0.76
