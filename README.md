@@ -65,7 +65,7 @@ how the workflow is run.
 
 | Recommended Hardware                                            | Precision
 | ----------------------------------------------------------------|-
-| CPU: Intel® 2th Gen Xeon® Platinum 8280 CPU @ 2.70GHz or higher | FP32, INT8
+| CPU: Intel® 2th Gen Xeon® Platinum 8280L CPU @ 2.70GHz or higher | FP32, INT8
 | RAM: 187 GB                                                     |
 | Recommended Free Disk Space: 20 GB or more                      |
 
@@ -96,7 +96,7 @@ As part of the hyperparameter tuning process, it is important to state that the 
 Another important aspect of the VGG-UNET model trained with Intel ®oneDNN optimized TensorFlow is that this model is trained using a FP32 precision.
 
 ### Intel® Neural Compressor
-After training the VGG-UNET model using Intel ®oneDNN optimized TensorFlow, its inference efficiency can be accelerated even more by the Intel® Neural Compressor library. This project enables the use of Intel® Neural Compressor to convert the trained FP32 VGG-UNET model into an INT8 CRNN model by implementing post-training quantization, which apart from reducing model size, increase the inference speed up.
+After training the VGG-UNET model using Intel® oneDNN optimized TensorFlow, its inference efficiency can be accelerated even more by the Intel® Neural Compressor library. This project enables the use of Intel® Neural Compressor to convert the trained FP32 VGG-UNET model into an INT8 CRNN model by implementing post-training quantization, which apart from reducing model size, increase the inference speed up.
 
 The quantization of the trained FP32 VGG-UNET model into an INT8 CRNN model and other executed operations based on Intel® Neural Compressor optimizations can be inspected [here](#optimizations-with-intel-neural-compressor).
 
@@ -168,9 +168,13 @@ conda config --set solver libmamba
 
 | Packages | Version | 
 | -------- | ------- |
+| intelpython3_core | 2024.0.0 |
 | python | 3.9.18 |
 | intelpython3_core | 2024.0.0 |
 | intel-aikit-tensorflow | 2024.0 |
+| tqdm | 4.64.0 |
+| pip | 23.3 |
+| opencv-python | 4.8.0.76 |
 
 The dependencies required to properly execute this workflow can be found in the yml file [$WORKSPACE/env/intel_env.yml](env/intel_env.yml).
 
@@ -230,7 +234,10 @@ The execution of this reference kit is compatible with the following environment
 * Bare Metal
 
 ### Run Using Bare Metal
-Before executing the different stages of this use case, make sure your ``conda`` environment is already configured. If you don't already have ``conda`` installed, go to [Set Up Conda](#set-up-conda), or if the ``conda`` environment is not already activated, refer to [Set Up Environment](#set-up-environment).
+
+#### Set Up System Software
+
+Our examples use the `conda` package and environment on your local computer. If you don't already have `conda` installed or the `conda` environment created, go to [Set Up Conda*](#set-up-conda) or see the [Conda* Linux installation instructions](https://docs.conda.io/projects/conda/en/stable/user-guide/install/linux.html).
 
 > *Note: It is assumed that the present working directory is the root directory of this code repository. Use the following command to go to the root directory.*
 
@@ -730,7 +737,7 @@ bald-tree =>  0.01
 
 ## Summary and Next Steps
 
-This reference kit presents a AI semantic segmentation solution specialized in accurately recognize entities and segment paved areas from input images captured by drones. Thus, this system could contribute to the safe landing of drones in dedicated paved areas, reducing the risk of injuring people or damaging property.
+This reference kit presents an AI semantic segmentation solution specialized in accurately recognize entities and segment paved areas from input images captured by drones. Thus, this system could contribute to the safe landing of drones in dedicated paved areas, reducing the risk of injuring people or damaging property.
 
 To carry out the segmentation task, the system makes use of a semantic segmentation model called VGG-UNET. Furthermore, the VGG-UNET model leverages the optimizations given by Intel® oneDNN optimized TensorFlow\* and Intel® Neural Compressor to accelerate its training, hyperparameter tuning and inference processing capabilities while maintaining the accuracy. 
 
