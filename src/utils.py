@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Intel Corporation
+# Copyright (C) 2024 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 """
 Support file for training and evaluation
@@ -307,7 +307,7 @@ def evaluate(model=None, inp_images=None, annotations=None, inp_images_dir=None,
         if latest_checkpoint is not None:
             print("Loading the weights from latest checkpoint ",
                   latest_checkpoint)
-            model.load_weights(latest_checkpoint)
+            model.load_weights(latest_checkpoint).expect_partial()
 
     if inp_images is None:
         paths = get_pairs_from_paths(inp_images_dir, annotations_dir, mode="eval")
@@ -516,7 +516,10 @@ def train_hyperparameters_tuning(model, train_images, train_annotations, batch_s
     for combination in p_combinations:
         if load_weights is not None and len(load_weights) > 0:
             print("Loading weights from ", load_weights)
-            model.load_weights(load_weights)
+            model.compile(loss='categorical_crossentropy',
+                          optimizer=keras.optimizers.Adam(learning_rate=0.001),
+                          metrics=['accuracy'])
+            model.load_weights(load_weights).expect_partial()
 
         if len(combination) > 0:
             ctr += 1

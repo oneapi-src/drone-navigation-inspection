@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Intel Corporation
+# Copyright (C) 2024 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 
 """
@@ -25,41 +25,29 @@ if __name__ == "__main__":
                         type=str,
                         required=False,
                         default=None,
-                        help='Please provide the Latest Checkpoint path e.g '
-                             'for "./vgg-unet.1"...Default is None')
+                        help='Please provide the Latest Checkpoint path. Default is None.')
     parser.add_argument('-d',
                         '--data_path',
                         type=str,
-                        required=False,
-                        default='Aerial_Semantic_Segmentation_Drone_Dataset/'
-                                'dataset/semantic_drone_dataset/',
+                        required=True,
                         help='Absolute path to the dataset folder containing '
-                             '"original_images" and "label_images_semantic" folders')
+                             '"original_images" and "label_images_semantic" folders.')
     parser.add_argument('-e',
                         '--epochs',
                         type=str,
                         required=False,
                         default=1,
-                        help='provide the number of epochs want to train')
+                        help='Provide the number of epochs want to train.')
     parser.add_argument('-hy',
                         '--hyperparams',
                         type=str,
                         required=False,
                         default=0,
-                        help='enable the hyperparameters for tuning...Default is "0"')
+                        help='Enable hyperparameter tuning. Default is "0" to '
+                             'indicate unabled hyperparameter tuning.')
 
-   
-    parser.add_argument('-o',
-                        '--outpath',
-                        type=int,
-                        required=False,
-                        default=0,
-                        help='use 1 to save Intel Model by creating intel folder in model path,  \
-                        for stock 0')
-
-    
+ 
     FLAGS = parser.parse_args()
-    model_path = FLAGS.model_path
     train_images_path = os.path.join(FLAGS.data_path, "original_images")
     train_labels_path = os.path.join(FLAGS.data_path, "label_images_semantic")
     epochs = int(FLAGS.epochs)
@@ -73,12 +61,8 @@ if __name__ == "__main__":
         print("Please provide path to save the model...\n")
         sys.exit(1)
     else:
-        if FLAGS.outpath != 1:
-            model_path = FLAGS.model_path + "/stock/vgg_unet"
-        else:
-            model_path = FLAGS.model_path + "/intel/vgg_unet"
+        model_path = FLAGS.model_path + "/vgg_unet"
 
-   
 
     # Model Initialization
 

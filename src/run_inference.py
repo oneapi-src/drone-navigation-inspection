@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Intel Corporation
+# Copyright (C) 2024 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 """
 inference of FP32 Model and INT8 Model
@@ -10,7 +10,7 @@ import time
 import argparse
 import itertools
 import random
-from cv2 import cv2
+import cv2
 import numpy as np
 import tensorflow as tf
 import six
@@ -168,22 +168,20 @@ if __name__ == "__main__":
     parser.add_argument('-m',
                         '--modelpath',
                         type=str,
-                        required=False,
-                        default='./frozen_graph/frozen_graph.pb',
-                        help='provide frozen Model path ".pb" file...users can also use INC INT8 quantized model here')
+                        required=True,
+                        help='Provide frozen Model path ".pb" file. Users can also use INC INT8 quantized model here.')
     parser.add_argument('-d',
                         '--data_path',
                         type=str,
-                        required=False,
-                        default='Aerial_Semantic_Segmentation_Drone_Dataset/dataset/semantic_drone_dataset/',
+                        required=True,
                         help='Absolute path to the dataset folder containing '
-                             '"original_images" and "label_images_semantic" folders')
+                             '"original_images" and "label_images_semantic" folders.')
     parser.add_argument('-b',
                         '--batchsize',
                         type=str,
                         required=False,
                         default=1,
-                        help='batchsize used for inference')
+                        help='batchsize used for inference.')
 
     paramters = parser.parse_args()
     FLAGS = parser.parse_args()
