@@ -3,10 +3,10 @@ channels:
   - intel
   - conda-forge
 dependencies:
-  - intelpython3_core=2024.0.0
-  - python=3.9.18
-  - intel-aikit-tensorflow=2024.0
-  - tqdm=4.64.0
-  - pip=23.3  
+  - intelpython3_core=2024.1.0
+  - python=3.9
+  - intel-aikit-tensorflow=2024.1
+  - tqdm=4.66.2
+  - pip=24.0  
   - pip:
-    - opencv-python==4.8.0.76
+    - opencv-python==4.9.0.80
