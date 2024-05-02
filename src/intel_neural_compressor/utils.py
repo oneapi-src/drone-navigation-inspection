@@ -44,8 +44,8 @@ elif IMAGE_ORDERING == 'channels_last':
                      "vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5"
 
 cryptogen = SystemRandom()
-class_colors = [(cryptogen.randint(0, 255), cryptogen.randint(
-    0, 255), cryptogen.randint(0, 255)) for _ in range(5000)]
+class_colors = [np.array((cryptogen.randint(0, 255), cryptogen.randint(
+    0, 255), cryptogen.randint(0, 255))) for _ in range(5000)]
 
 
 def get_colored_segmentation_image(seg_arr, n_classes, colors=None):
@@ -58,9 +58,8 @@ def get_colored_segmentation_image(seg_arr, n_classes, colors=None):
     seg_img = np.zeros((output_height, output_width, 3))
 
     for c in range(n_classes):
-        seg_img[:, :, 0] += ((seg_arr[:, :] == c) * (colors[c][0])).astype('uint8')
-        seg_img[:, :, 1] += ((seg_arr[:, :] == c) * (colors[c][1])).astype('uint8')
-        seg_img[:, :, 2] += ((seg_arr[:, :] == c) * (colors[c][2])).astype('uint8')
+        mask = (seg_arr == c)
+        seg_img[mask] += colors[c].astype('uint8')
 
     return seg_img
 
@@ -142,7 +141,7 @@ def get_segmentation_array(image_input, nclasses, width, height, no_reshape=Fals
         raise Exception(f"get_segmentation_array: Can't process input type {str(type(image_input))}")
 
     img = cv2.resize(img, (width, height), interpolation=cv2.INTER_NEAREST)
-    img = img[:, :, 0]
+    img = img.mean(axis=-1)
 
     for c in range(nclasses):
         seg_labels[:, :, c] = (img == c).astype(int)
@@ -335,7 +334,9 @@ def evaluate(model=None, inp_images=None, annotations=None, inp_images_dir=None,
             fn[cl_i] += np.sum((pr != cl_i) * (gt == cl_i))
             n_pixels[cl_i] += np.sum(gt == cl_i)
 
-    cl_wise_score = tp / (tp + fp + fn + 0.000000000001)
+    cl_wise_score = tp / (tp + fp + fn)
+    cl_wise_score = np.nan_to_num(cl_wise_score, nan=0.0)
+
     n_pixels_norm = n_pixels / np.sum(n_pixels)
     frequency_weighted_iu = np.sum(cl_wise_score * n_pixels_norm)
     mean_iu = np.mean(cl_wise_score)
@@ -466,11 +467,10 @@ def predict(model=None, inp=None, out_fname=None, checkpoints_path=None, overlay
     pr = model.predict(np.array([x]))[0]
     pr = pr.reshape((output_height, output_width, n_classes)).argmax(axis=2)
 
-    seg_img = visualize_segmentation(pr, inp, n_classes=n_classes, colors=colors,
-                                     overlay_img=overlay_img, prediction_width=prediction_width,
-                                     prediction_height=prediction_height)
-
     if out_fname is not None:
+        seg_img = visualize_segmentation(pr, inp, n_classes=n_classes, colors=colors,
+                                 overlay_img=overlay_img, prediction_width=prediction_width,
+                                 prediction_height=prediction_height)
         cv2.imwrite(out_fname, seg_img)
 
     return pr
@@ -540,7 +540,6 @@ def train_hyperparameters_tuning(model, train_images, train_annotations, batch_s
 
             start_time = time.time()
             hist=model.fit_generator(train_gen, steps_per_epoch, epochs=epochs, workers=1, use_multiprocessing=False)
-            #model.fit_generator(train_gen, steps_per_epoch, epochs=epochs, workers=1, use_multiprocessing=False)
             total_time += time.time()-start_time
             print("Fit number: ", ctr, " ==> Time Taken for Training in seconds --> ", time.time()-start_time)
             if best_config["accuracy"] < hist.history["accuracy"][0]:          
