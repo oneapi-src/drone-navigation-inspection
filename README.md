@@ -168,13 +168,13 @@ conda config --set solver libmamba
 
 | Packages | Version | 
 | -------- | ------- |
-| intelpython3_core | 2024.0.0 |
-| python | 3.9.18 |
-| intelpython3_core | 2024.0.0 |
-| intel-aikit-tensorflow | 2024.0 |
-| tqdm | 4.64.0 |
-| pip | 23.3 |
-| opencv-python | 4.8.0.76 |
+| intelpython3_core | 2024.1.0 |
+| python | 3.9 |
+| intelpython3_core | 2024.1.0 |
+| intel-aikit-tensorflow | 2024.1 |
+| tqdm | 4.66.2 |
+| pip | 24.0 |
+| opencv-python | 4.9.0.80 |
 
 The dependencies required to properly execute this workflow can be found in the yml file [$WORKSPACE/env/intel_env.yml](env/intel_env.yml).
 
